@@ -74,7 +74,11 @@ function GhostReplay.Record.Replay(ply, recording)
     GhostReplay.Notify(ply, "Replaying recording", GhostReplay.NotifyTypes.SUCCESS)
 end
 
-function GhostReplay.Record.Pause(ply)
+function GhostReplay.Record.SetPaused(ply, isPaused)
+    if (isPaused == nil) then
+        isPaused = true
+    end
+
     if (not ply.GhostReplayReplaying) then
         return
     end
@@ -84,8 +88,7 @@ function GhostReplay.Record.Pause(ply)
     if (not recording) then
         return
     end
-
-    ply.GhostReplayReplaying.pause = true
+    ply.GhostReplayReplaying.isPaused = isPaused
 end
 
 function GhostReplay.Record.SetFrame(ply, frameIndex)
@@ -129,14 +132,13 @@ end
 
 hook.Add("Think", "GhostReplay.Record.ReplayThink", function()
     for _, ply in ipairs(player.GetAll()) do
-        if (ply.GhostReplayReplaying and not ply.GhostReplayReplaying.pause) then
+        if (ply.GhostReplayReplaying and not ply.GhostReplayReplaying.isPaused) then
             local replaying = ply.GhostReplayReplaying
             local frameToReplay = replaying.frameToReplay
             local frameDelay = replaying.frameDelay
             local ghost = replaying.ghost
 
             if (not frameToReplay) then
-                GhostReplay.Record.Stop(ply)
                 return
             end
 
@@ -147,13 +149,14 @@ hook.Add("Think", "GhostReplay.Record.ReplayThink", function()
 
                 if (nextFrame) then
                     queueFrameForReplay(ply, replaying.recording, frameToReplay.frameIndex + 1, frameDelay)
-                else
-                    GhostReplay.Record.Stop(ply)
                 end
             end
 
             if (timeSinceStart >= frameToReplay.time) then
                 showFrame(ghost, frameToReplay)
+                net.Start("GhostReplay.SetFrame")
+                net.WriteUInt(frameToReplay.frameIndex, 32)
+                net.Send(ply)
             end
         end
     end

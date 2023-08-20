@@ -1,4 +1,4 @@
-local STRESS_TEST_ENABLED = true
+local STRESS_TEST_ENABLED = false
 local fakePlayers = {}
 
 local function fakePlayer(index)
@@ -157,7 +157,7 @@ concommand.Add("ghost_replay_list_recordings", function(ply, cmd, args)
     end
 end)
 
-hook.Add("FinishMove", "GhostReplay.Record.FinishMove", function(ply, moveData, cmd)
+hook.Add("PlayerTick", "GhostReplay.Record.PlayerTick", function(ply, moveData)
     if (not ply.GhostReplayRecording) then return end
 
     local newFrame = makeNewFrame(ply)
