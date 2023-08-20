@@ -1,0 +1,16 @@
+{
+  "title"		:	"Ghost Replay",
+  "type"		:	"tool",
+  "tags"		:	[ "fun" ],
+  "description":	"Record your movement and replay a ghost of yourself. Made for Surfing.",
+  "ignore"	:
+  [
+    ".git*",
+    ".github*",
+    ".glua*",
+    ".vscode*",
+    ".gitignore",
+    "LICENSE",
+    "README.md"
+  ]
+}
