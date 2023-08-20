@@ -15,6 +15,12 @@ Addon that allows you to record and replay your movements in Garry's Mod. This i
 4. Use `ghost_replay_list_recordings` to list all recordings and their IDs
 5. Type `ghost_replay_play 1` to play back the specified recording
 
+## Demo
+
+Shows recording and playback of a recording.
+
+[![Video demonstration](.github/demo.gif)](.github/demo.gif)
+
 ## Known limitations
 
 - Animations are not recorded properly (so you will not see the player jump, crouch or taunt)
