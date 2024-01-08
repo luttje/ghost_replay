@@ -33,6 +33,13 @@ Shows recording and playback of a recording.
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/jibraeelabdel"><img src="https://avatars.githubusercontent.com/u/78187414?v=4?s=100" width="100px;" alt="jibraeelabdel"/><br /><sub><b>jibraeelabdel</b></sub></a><br /><a href="#code-jibraeelabdel" title="Code">💻</a></td>
+    </tr>
+  </tbody>
+</table>
 
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
