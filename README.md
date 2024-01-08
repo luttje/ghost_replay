@@ -1,5 +1,7 @@
 # GMod Ghost Replay
 
+[![All Contributors](https://img.shields.io/github/all-contributors/luttje/gmod-ghost-replay?color=ee8449&style=flat-square)](#contributors)
+
 Addon that allows you to record and replay your movements in Garry's Mod. This is a proof-of-concept that should be improved before being used in production.
 
 ## Installation
@@ -25,3 +27,14 @@ Shows recording and playback of a recording.
 
 - Animations are not recorded properly (so you will not see the player jump, crouch or taunt)
 - There is no limit on the recording length. If a player starts a recording and never stops it, the server will eventually run out of memory
+
+## Contributors
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
