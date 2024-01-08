@@ -1,4 +1,21 @@
 {
   "projectName": "gmod-ghost-replay",
-  "projectOwner": "luttje"
+  "projectOwner": "luttje",
+  "files": [
+    "README.md"
+  ],
+  "commitType": "docs",
+  "commitConvention": "angular",
+  "contributorsPerLine": 7,
+  "contributors": [
+    {
+      "login": "jibraeelabdel",
+      "name": "jibraeelabdel",
+      "avatar_url": "https://avatars.githubusercontent.com/u/78187414?v=4",
+      "profile": "https://github.com/jibraeelabdel",
+      "contributions": [
+        "code"
+      ]
+    }
+  ]
 }
