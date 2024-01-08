@@ -128,6 +128,7 @@ end)
 hook.Add("GUIMousePressed", "GhostReplay.ControlCamera", function(mouseCode, aimVector)
     if (not IsValid(GhostReplay.Gui)) then return end
 
+    GhostReplay.Gui:SetSize(0, 0)
     GhostReplay.Gui:SetMouseInputEnabled(false)
     GhostReplay.Gui:SetKeyboardInputEnabled(false)
     GhostReplay.Gui.ControllingCamera = true
@@ -139,6 +140,8 @@ hook.Add("Think", "GhostReplay.ReleaseControlCamera", function()
     if (not GhostReplay.Gui.ControllingCamera) then return end
     if (input.IsMouseDown(MOUSE_FIRST)) then return end
 
+    local width = math.min(ScrW() * .9, 800)
+    GhostReplay.Gui:SetSize(width, 128)
     GhostReplay.Gui:SetMouseInputEnabled(true)
     GhostReplay.Gui:SetKeyboardInputEnabled(true)
 end)
