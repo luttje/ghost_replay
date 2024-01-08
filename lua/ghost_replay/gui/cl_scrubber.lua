@@ -17,6 +17,26 @@ function PANEL:Init()
         self:SetPlaying(self.playButton:GetText() == "Play")
     end
 
+
+    --Combo Box for Selecting Camera Angle
+    self.comboBox = vgui.Create("DComboBox", self)
+    self.comboBox:SetValue("Camera")
+    self.comboBox:Dock(LEFT)
+    self.comboBox:DockMargin(8, 64, 8, 8)
+    self.comboBox:SetTall(32)
+    self.comboBox:AddChoice("First Person")
+    self.comboBox:AddChoice("Third Person")
+    self.comboBox:AddChoice("Free Camera")
+    self.comboBox:AddChoice("Death Camera")
+    self.comboBox:AddChoice("Freeze Camera")
+    self.comboBox:AddChoice("Fixed Camera")
+    
+    self.comboBox.OnSelect =  function (self, index, value)
+        net.Start("GhostReplay.ToggleCameraView")
+        net.WriteString(value)
+        net.SendToServer()
+    end
+
     self.slider = vgui.Create("DNumSlider", self)
     self.slider:Dock(FILL)
     self.slider:SetDecimals(0)

@@ -91,6 +91,23 @@ function GhostReplay.Record.SetPaused(ply, isPaused)
     ply.GhostReplayReplaying.isPaused = isPaused
 end
 
+function GhostReplay.Record.ToggleCameraView(ply, cameraview)
+    if(cameraview == "Death Camera") then
+        ply:Spectate(OBS_MODE_DEATHCAM)
+    elseif (cameraview == "Freeze Camera") then
+        ply:Spectate(OBS_MODE_FREEZECAM)
+    elseif (cameraview == "Fixed Camera") then
+        ply:Spectate(OBS_MODE_FIXED)
+    elseif (cameraview == "First Person") then
+        ply:Spectate(OBS_MODE_IN_EYE)
+    elseif (cameraview == "Third Person") then
+        ply:Spectate(OBS_MODE_CHASE)
+    elseif (cameraview == "Free Camera") then
+        ply:Spectate(OBS_MODE_ROAMING)
+    end
+
+end
+
 function GhostReplay.Record.SetFrame(ply, frameIndex)
     if (not ply.GhostReplayReplaying) then
         return
