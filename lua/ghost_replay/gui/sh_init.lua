@@ -7,6 +7,7 @@ if (SERVER) then
     util.AddNetworkString("GhostReplay.SetFrame")
     util.AddNetworkString("GhostReplay.ScrubTo")
     util.AddNetworkString("GhostReplay.End")
+    util.AddNetworkString("GhostReplay.ToggleCameraView")
 
     net.Receive("GhostReplay.TogglePlayRecording", function(len, ply)
         GhostReplay.Record.SetPaused(ply, ply.GhostReplayReplaying and not ply.GhostReplayReplaying.isPaused or false)
@@ -23,6 +24,11 @@ if (SERVER) then
         GhostReplay.Record.Stop(ply)
         net.Start("GhostReplay.CloseScrubber")
         net.Send(ply)
+    end)
+
+    net.Receive("GhostReplay.ToggleCameraView", function(len, ply)
+        local cameraview = net.ReadString()
+        GhostReplay.Record.ToggleCameraView(ply, cameraview)
     end)
 else
     include("cl_scrubber.lua")
