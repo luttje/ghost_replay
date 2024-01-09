@@ -25,28 +25,6 @@ local function fakePlayer(index)
     return fakePlayers[index]
 end
 
-local function makeNewFrame(ply)
-    local lastFrame = ply.GhostReplayRecording[#ply.GhostReplayRecording]
-    local newFrame = {
-        time = CurTime(),
-        appearance = lastFrame and lastFrame.appearance or {},
-        movement = {}
-    }
-
-    ply.GhostReplayRecording[#ply.GhostReplayRecording + 1] = newFrame
-
-    return newFrame
-end
-
-local function getLastRecordedFrameOrNew(ply)
-    local lastFrame = ply.GhostReplayRecording[#ply.GhostReplayRecording]
-
-    if (not lastFrame) then
-        lastFrame = makeNewFrame(ply)
-    end
-
-    return lastFrame
-end
 
 local function getMovement(ply)
     return {
@@ -65,6 +43,28 @@ local function getAppearance(ply)
         material = ply:GetMaterial(),
         sequence = ply:GetSequence(),
     }
+end
+
+local function makeNewFrame(ply)
+    local newFrame = {
+        time = CurTime(),
+        appearance = getAppearance(ply),
+        movement = getMovement(ply)
+    }
+
+    ply.GhostReplayRecording[#ply.GhostReplayRecording + 1] = newFrame
+
+    return newFrame
+end
+
+local function getLastRecordedFrameOrNew(ply)
+    local lastFrame = ply.GhostReplayRecording[#ply.GhostReplayRecording]
+
+    if (not lastFrame) then
+        lastFrame = makeNewFrame(ply)
+    end
+
+    return lastFrame
 end
 
 local function startRecording(ply)
