@@ -27,8 +27,8 @@ if (SERVER) then
     end)
 
     net.Receive("GhostReplay.ToggleCameraView", function(len, ply)
-        local cameraview = net.ReadString()
-        GhostReplay.Record.ToggleCameraView(ply, cameraview)
+        local cameraView = net.ReadString()
+        GhostReplay.Record.ToggleCameraView(ply, cameraView)
     end)
 else
     include("cl_scrubber.lua")

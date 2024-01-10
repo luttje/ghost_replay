@@ -25,14 +25,33 @@ local function showFrame(ghost, frameToReplay)
         ghost:SetBodyGroups(appearance.bodygroups)
         ghost:SetColor(appearance.color)
         ghost:SetMaterial(appearance.material)
-        ghost:SetSequence(appearance.sequence)
-    end
+   end
 
     local movement = frameToReplay.movement
 
     ghost:SetPos(movement.pos)
     ghost:SetAngles(movement.ang)
     ghost:SetVelocity(movement.vel)
+    ghost:SetMoveType(3)
+    ghost:SetPlaybackRate(1)
+
+    if(string.match(ghost:GetSequenceActivityName(appearance.sequence), "SPRINT") or string.match(ghost:GetSequenceActivityName(appearance.sequence), "JUMP")) then
+        ghost:SetSequence(appearance.sequence)
+        ghost:SetCycle(CurTime() % 1)
+    elseif (string.match(ghost:GetSequenceActivityName(appearance.sequence), "RUN")) then
+        ghost:SetSequence( ghost:LookupSequence( "menu_walk" ) )
+		ghost:SetCycle(CurTime() % 1)
+    else
+        ghost:SetSequence(ghost:LookupSequence( "idle_all_01" ))
+        ghost:SetCycle(CurTime() % 1)
+    end
+
+    if (ghost.curPos ~= movement.pos) then
+        ghost.curPos = movement.pos
+    else
+        ghost:SetSequence(ghost:LookupSequence( "idle_all_01" ))
+        ghost:SetCycle(CurTime() % 1)
+    end
 end
 
 function GhostReplay.Record.Replay(ply, recording)
@@ -42,6 +61,7 @@ function GhostReplay.Record.Replay(ply, recording)
     end
 
     local ghostEntity = ents.Create("ghost_replay_ghost")
+    ghostEntity.curPos = nil
     ghostEntity:SetPos(ply:GetPos())
     ghostEntity:Spawn()
 
@@ -91,18 +111,18 @@ function GhostReplay.Record.SetPaused(ply, isPaused)
     ply.GhostReplayReplaying.isPaused = isPaused
 end
 
-function GhostReplay.Record.ToggleCameraView(ply, cameraview)
-    if(cameraview == "Death Camera") then
+function GhostReplay.Record.ToggleCameraView(ply, cameraView)
+    if(cameraView == "Death Camera") then
         ply:Spectate(OBS_MODE_DEATHCAM)
-    elseif (cameraview == "Freeze Camera") then
+    elseif (cameraView == "Freeze Camera") then
         ply:Spectate(OBS_MODE_FREEZECAM)
-    elseif (cameraview == "Fixed Camera") then
+    elseif (cameraView == "Fixed Camera") then
         ply:Spectate(OBS_MODE_FIXED)
-    elseif (cameraview == "First Person") then
+    elseif (cameraView == "First Person") then
         ply:Spectate(OBS_MODE_IN_EYE)
-    elseif (cameraview == "Third Person") then
+    elseif (cameraView == "Third Person") then
         ply:Spectate(OBS_MODE_CHASE)
-    elseif (cameraview == "Free Camera") then
+    elseif (cameraView == "Free Camera") then
         ply:Spectate(OBS_MODE_ROAMING)
     end
 
@@ -163,7 +183,6 @@ hook.Add("Think", "GhostReplay.Record.ReplayThink", function()
 
             if (timeSinceStart >= frameToReplay.time + frameDelay) then
                 local nextFrame = replaying.recording[frameToReplay.frameIndex + 1]
-
                 if (nextFrame) then
                     queueFrameForReplay(ply, replaying.recording, frameToReplay.frameIndex + 1, frameDelay)
                 end
