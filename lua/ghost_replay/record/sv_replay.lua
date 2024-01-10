@@ -25,19 +25,6 @@ local function showFrame(ghost, frameToReplay)
         ghost:SetBodyGroups(appearance.bodygroups)
         ghost:SetColor(appearance.color)
         ghost:SetMaterial(appearance.material)
-        ghost:SetMoveType(3)
-        ghost:SetPlaybackRate(1)
-
-        if(string.match(ghost:GetSequenceActivityName(appearance.sequence), "SPRINT") or string.match(ghost:GetSequenceActivityName(appearance.sequence), "JUMP")) then
-            ghost:SetSequence(appearance.sequence)
-            ghost:SetCycle(CurTime() % 1)
-        elseif (string.match(ghost:GetSequenceActivityName(appearance.sequence), "RUN")) then
-            ghost:SetSequence( ghost:LookupSequence( "menu_walk" ) )
-		    ghost:SetCycle(CurTime() % 1)
-        else
-            ghost:SetSequence(ghost:LookupSequence( "idle_all_01" ))
-            ghost:SetCycle(CurTime() % 1)
-        end
    end
 
     local movement = frameToReplay.movement
@@ -45,6 +32,26 @@ local function showFrame(ghost, frameToReplay)
     ghost:SetPos(movement.pos)
     ghost:SetAngles(movement.ang)
     ghost:SetVelocity(movement.vel)
+    ghost:SetMoveType(3)
+    ghost:SetPlaybackRate(1)
+
+    if(string.match(ghost:GetSequenceActivityName(appearance.sequence), "SPRINT") or string.match(ghost:GetSequenceActivityName(appearance.sequence), "JUMP")) then
+        ghost:SetSequence(appearance.sequence)
+        ghost:SetCycle(CurTime() % 1)
+    elseif (string.match(ghost:GetSequenceActivityName(appearance.sequence), "RUN")) then
+        ghost:SetSequence( ghost:LookupSequence( "menu_walk" ) )
+		ghost:SetCycle(CurTime() % 1)
+    else
+        ghost:SetSequence(ghost:LookupSequence( "idle_all_01" ))
+        ghost:SetCycle(CurTime() % 1)
+    end
+
+    if (ghost.curPos ~= movement.pos) then
+        ghost.curPos = movement.pos
+    else
+        ghost:SetSequence(ghost:LookupSequence( "idle_all_01" ))
+        ghost:SetCycle(CurTime() % 1)
+    end
 end
 
 function GhostReplay.Record.Replay(ply, recording)
@@ -54,8 +61,7 @@ function GhostReplay.Record.Replay(ply, recording)
     end
 
     local ghostEntity = ents.Create("ghost_replay_ghost")
-    ghostEntity.lastSequence = 0
-    ghostEntity.altSequence = 0
+    ghostEntity.curPos = nil
     ghostEntity:SetPos(ply:GetPos())
     ghostEntity:Spawn()
 
@@ -177,7 +183,6 @@ hook.Add("Think", "GhostReplay.Record.ReplayThink", function()
 
             if (timeSinceStart >= frameToReplay.time + frameDelay) then
                 local nextFrame = replaying.recording[frameToReplay.frameIndex + 1]
-
                 if (nextFrame) then
                     queueFrameForReplay(ply, replaying.recording, frameToReplay.frameIndex + 1, frameDelay)
                 end
